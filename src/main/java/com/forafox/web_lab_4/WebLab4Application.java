@@ -3,10 +3,15 @@ package com.forafox.web_lab_4;
 import com.forafox.web_lab_4.enumeration.Status;
 import com.forafox.web_lab_4.model.Server;
 import com.forafox.web_lab_4.repo.ServerRepo;
+import org.apache.catalina.filters.CorsFilter;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @SpringBootApplication
 public class WebLab4Application {
@@ -25,6 +30,19 @@ public class WebLab4Application {
 			serverRepo.save(new Server(null,"192.168.1.14","Red Hat Enterprise Linux","64 GB","Mail Server",
 					"http://localhost:8080/server/image/server4.png", Status.SERVER_DOWN));
 		};
-
 	}
+//	@Bean
+//	public CorsFilter corsFilter(){
+//		UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+//		CorsConfiguration corsConfiguration=new CorsConfiguration();
+//		corsConfiguration.setAllowCredentials(true);
+//		corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://localhost:4200"));
+//		corsConfiguration.setAllowedHeaders(Arrays.asList("Origin","Access-Control-Allow-Origin", "Content-Type",
+//				"Accept","Jwt-Token","Authorization","Origin, Accept","X-Requested-With",
+//				"Access-Control-Request-Method", "Access-Control-Allow-Origin",
+//				"Access=Control-Allow-Credentials", "OPTIONS"));
+//		urlBasedCorsConfigurationSource.registerCorsConfiguration("/**",corsConfiguration);
+//		return new CorsFilter();
+//
+//	}
 }

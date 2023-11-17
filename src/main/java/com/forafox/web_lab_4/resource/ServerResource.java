@@ -20,6 +20,7 @@ import static java.time.LocalDateTime.now;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/server")
 @RequiredArgsConstructor
 public class ServerResource {

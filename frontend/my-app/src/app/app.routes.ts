@@ -25,4 +25,8 @@ export const routes: Routes =[
     path:'register',
     loadComponent:()=>import('./pages/registration/registration.component').then((mod)=>mod.RegistrationComponent),
   },
+  {
+    path:'canvas',
+    loadComponent:()=>import('./pages/components/canvas/canvas-element/canvas-element.component').then((mod)=>mod.CanvasElementComponent),
+  },
 ];

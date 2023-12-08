@@ -1,0 +1,74 @@
+<app-header></app-header>
+<div class="mb-4 p-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 place-items-center">
+  <div class="w-1/2 grid">
+    <div class="max-w-md mx-auto bg-white p-6 rounded-md shadow-md">
+      <h2 class="text-2xl font-semibold mb-4">Coordinate Form</h2>
+
+      <!-- X Coordinate Checkbox -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-600 mb-1">X Coordinate:</label>
+        <div class="space-x-2 flex-wrap">
+          <input type="checkbox" id="x-2" name="x-coordinate" value="-2">
+          <label for="x-2">-2</label>
+          <input type="checkbox" id="x-1.5" name="x-coordinate" value="-1.5">
+          <label for="x-1.5">-1.5</label>
+          <input type="checkbox" id="x-1" name="x-coordinate" value="-1">
+          <label for="x-1">-1</label>
+          <input type="checkbox" id="x-0.5" name="x-coordinate" value="-0.5">
+          <label for="x-0.5">-0.5</label>
+          <input type="checkbox" id="x0" name="x-coordinate" value="0">
+          <label for="x0">0</label>
+          <input type="checkbox" id="x0.5" name="x-coordinate" value="0.5">
+          <label for="x0.5">0.5</label>
+          <input type="checkbox" id="x1" name="x-coordinate" value="1">
+          <label for="x1">1</label>
+          <input type="checkbox" id="x1.5" name="x-coordinate" value="1.5">
+          <label for="x1.5">1.5</label>
+          <input type="checkbox" id="x2" name="x-coordinate" value="2">
+          <label for="x2">2</label>
+        </div>
+      </div>
+
+      <!-- Y Coordinate Text Input -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-600 mb-1">Y (-5:3) Coordinate:</label>
+        <input type="text" id="y-coordinate" name="y-coordinate" class="border rounded-md p-2 w-full">
+      </div>
+
+      <!-- Radius Checkbox -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-600 mb-1">Radius:</label>
+        <div class="space-x-2 flex-wrap">
+          <input type="checkbox" id="r-2" name="r-coordinate" value="-2">
+          <label for="r-2">-2</label>
+          <input type="checkbox" id="r-1.5" name="r-coordinate" value="-1.5">
+          <label for="r-1.5">-1.5</label>
+          <input type="checkbox" id="r-1" name="r-coordinate" value="-1">
+          <label for="r-1">-1</label>
+          <input type="checkbox" id="r-0.5" name="r-coordinate" value="-0.5">
+          <label for="r-0.5">-0.5</label>
+          <input type="checkbox" id="r0" name="r-coordinate" value="0">
+          <label for="r0">0</label>
+          <input type="checkbox" id="r0.5" name="r-coordinate" value="0.5">
+          <label for="r0.5">0.5</label>
+          <input type="checkbox" id="r1" name="r-coordinate" value="1">
+          <label for="r1">1</label>
+          <input type="checkbox" id="r1.5" name="r-coordinate" value="1.5">
+          <label for="r1.5">1.5</label>
+          <input type="checkbox" id="r2" name="r-coordinate" value="2">
+          <label for="r2">2</label>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button class="bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-600" type="submit">Submit</button>
+    </div>
+  </div>
+
+  <div class="w-1/2 grid ">
+    <canvas #canvas id="main_canvas" width="400" height="250">
+
+    </canvas>
+  </div>
+</div>
+<app-footer></app-footer>

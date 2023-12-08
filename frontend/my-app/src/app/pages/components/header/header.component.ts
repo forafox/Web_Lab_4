@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {AuthService} from "../../../services/auth.service";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
+import {LoginComponent} from "../../login/login.component";
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -22,7 +23,7 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  constructor(private authService: AuthService,private router: Router){
+  constructor(private authService: AuthService,private router: Router,private loginComponent: LoginComponent ){
     // if(authService.isLoggedInWithoutRouts()){
     //   this.isLoggedIn = true;
     // }
@@ -36,5 +37,9 @@ export class HeaderComponent implements OnInit {
     this.authService.signOut();
     this.router.navigateByUrl('/')
   }
+
+  // togglePageLoginComponent(){
+  //   this.loginComponent.togglePage();
+  // }
 
 }

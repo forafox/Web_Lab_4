@@ -16,4 +16,13 @@ export const routes: Routes =[
     path:'',
     loadComponent:()=>import('./pages/main/main.component').then((mod)=>mod.MainComponent),
   },
+  {
+    path:'contact',
+    loadComponent:()=>import('./pages/contact/contact.component').then((mod)=>mod.ContactComponent),
+    canActivate: [()=> inject(AuthService).isLoggedIn()]
+  },
+  {
+    path:'register',
+    loadComponent:()=>import('./pages/registration/registration.component').then((mod)=>mod.RegistrationComponent),
+  },
 ];

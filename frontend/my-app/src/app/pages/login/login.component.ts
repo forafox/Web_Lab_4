@@ -1,24 +1,27 @@
-import { Component } from '@angular/core';
+import {Component, Injectable} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
-import {HeaderComponent} from "../components/header/header.component";
-
+import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
+@Injectable({
+  providedIn: 'root'
+})
 export class LoginComponent {
 
-  isLoginPage: boolean = false;
-
-  togglePage() {
-    this.isLoginPage = !this.isLoginPage;
-  }
+  // isLoginPage: boolean = false;
+  //
+  // togglePage() {
+  //   console.log("Changed loginPage",this.isLoginPage)
+  //   this.isLoginPage = !this.isLoginPage;
+  // }
 
   form =this.fb.nonNullable.group({
     username:['',[Validators.required]],
@@ -33,11 +36,6 @@ export class LoginComponent {
               private router: Router,
               ) {
 
-  }
-
-  goToHomePage(): void {
-    // Выполнить переход на начальную страницу
-    this.router.navigate(['/']); // Замените '/' на ваш путь к начальной странице
   }
 
   goToDashboardPage(): void {
@@ -57,21 +55,6 @@ export class LoginComponent {
       },
       error: err => {
         this.error="Login Failed :(";
-        console.log(err)
-      }
-    });
-  }
-  createAccount(){
-    console.log("CREATE: ",this.form.value);
-    const {username,password,age,email} = this.form.getRawValue()
-
-    this.authService.register(username,password,age,email).subscribe({
-      next: (res) => {
-        console.log("REGISTER DONE: ",res);
-        this.router.navigateByUrl('/dashboard');
-      },
-      error: err => {
-        this.error="Registration Failed :(";
         console.log(err)
       }
     });

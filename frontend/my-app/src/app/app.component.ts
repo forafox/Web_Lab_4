@@ -6,6 +6,7 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {LoginComponent} from "./pages/login/login.component";
 import {HeaderComponent} from "./pages/components/header/header.component";
 import {OnInit} from '@angular/core';
+import {MainComponent} from "./pages/main/main.component";
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -15,6 +16,7 @@ import {OnInit} from '@angular/core';
     RouterLinkActive,
     ReactiveFormsModule,
     LoginComponent,
+    MainComponent,
     HttpClientModule,
     HeaderComponent,
   ],

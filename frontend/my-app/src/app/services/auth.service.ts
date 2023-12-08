@@ -99,6 +99,8 @@ export class AuthService {
     return this.user.asObservable();
   }
   getCurrentUserId(){
+    // return true;
+    //TEST
     return this.user.getValue()!.id;
   }
   isLoggedIn(): Observable<boolean | UrlTree>{

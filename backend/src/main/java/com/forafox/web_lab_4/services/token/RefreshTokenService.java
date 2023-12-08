@@ -1,11 +1,9 @@
-package com.forafox.web_lab_4.services;
+package com.forafox.web_lab_4.services.token;
 
 import com.forafox.web_lab_4.exception.TokenRefreshException;
-import com.forafox.web_lab_4.models.RefreshToken;
-import com.forafox.web_lab_4.models.RefreshTokenRepository;
-import com.forafox.web_lab_4.user.User;
-import com.forafox.web_lab_4.user.UserRepository;
-import jakarta.transaction.Transactional;
+import com.forafox.web_lab_4.models.token.RefreshToken;
+import com.forafox.web_lab_4.models.token.RefreshTokenRepository;
+import com.forafox.web_lab_4.models.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

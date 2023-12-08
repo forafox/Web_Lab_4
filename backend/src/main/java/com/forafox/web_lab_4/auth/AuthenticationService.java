@@ -2,12 +2,11 @@ package com.forafox.web_lab_4.auth;
 
 
 import com.forafox.web_lab_4.config.JwtService;
-import com.forafox.web_lab_4.exception.TokenRefreshException;
-import com.forafox.web_lab_4.models.RefreshToken;
-import com.forafox.web_lab_4.services.RefreshTokenService;
-import com.forafox.web_lab_4.user.Role;
-import com.forafox.web_lab_4.user.User;
-import com.forafox.web_lab_4.user.UserRepository;
+import com.forafox.web_lab_4.models.token.RefreshToken;
+import com.forafox.web_lab_4.services.token.RefreshTokenService;
+import com.forafox.web_lab_4.models.user.Role;
+import com.forafox.web_lab_4.models.user.User;
+import com.forafox.web_lab_4.models.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,7 +35,7 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .build();
         repository.save(user);
-        var jwtToken= jwtService.generateToken(user);
+        var jwtToken = jwtService.generateToken(user);
         var refreshToken = refreshTokenService.createRefreshToken(user.getId());
         return AuthenticationResponse.builder()
                 .token(jwtToken)
@@ -53,7 +52,7 @@ public class AuthenticationService {
         );
         var user = repository.findByUsername(request.getUsername())
                 .orElseThrow();
-        var jwtToken= jwtService.generateToken(user);
+        var jwtToken = jwtService.generateToken(user);
         var refreshToken = refreshTokenService.createRefreshToken(user.getId());
         return AuthenticationResponse.builder()
                 .token(jwtToken)
@@ -64,22 +63,6 @@ public class AuthenticationService {
     public TokenRefreshResponse authWithRefreshToken(TokenRefreshRequest request) {
 
         String requestRefreshToken = request.getRefreshToken();
-
-//        authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        request.getUsername(),
-//                        request.getPassword()
-//                )
-//        );
-//
-//        var user = repository.findByUsername(request.getUsername())
-//                .orElseThrow();
-//        var jwtToken= jwtService.generateToken(user);
-//
-//        return TokenRefreshResponse.builder()
-//                .accessToken(jwtToken)
-//                .build();
-//    }
 
         Optional<RefreshToken> refreshToken2 = refreshTokenService.findByToken(requestRefreshToken);
         refreshTokenService.verifyExpiration(refreshToken2.get());
@@ -93,31 +76,4 @@ public class AuthenticationService {
                 .refreshToken(refreshToken)
                 .build();
     }
-//        return refreshTokenService.findByToken(requestRefreshToken)
-//                .map(refreshTokenService::verifyExpiration)
-//                .map(RefreshToken::getUser)
-//                .map(user -> {
-//                    var jwtToken = jwtService.generateToken(user);
-//                    var refreshToken = refreshTokenService.createRefreshToken(user.getId());
-//                    return TokenRefreshResponse.builder()
-//                            .accessToken(jwtToken)
-//                            .refreshToken(refreshToken)
-//                            .build();
-//                })
-//                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
-//                        "Refresh token is not in database!"));
-//    }
 }
-
-//    String requestRefreshToken = request.getRefreshToken();
-
-//        return refreshTokenService.findByToken(requestRefreshToken)
-//                .map(refreshTokenService::verifyExpiration)
-//                .map(RefreshToken::getUser)
-//                .map(user -> {
-////                    String token = jwtService.auth(newuser.getUsername());
-//                    String token = service.auth(request);
-//                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
-//                })
-//                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
-//                        "Refresh token is not in database!"));

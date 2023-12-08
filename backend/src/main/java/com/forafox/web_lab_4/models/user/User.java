@@ -1,4 +1,4 @@
-package com.forafox.web_lab_4.user;
+package com.forafox.web_lab_4.models.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

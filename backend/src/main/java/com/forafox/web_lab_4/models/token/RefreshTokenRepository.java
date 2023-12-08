@@ -1,6 +1,7 @@
-package com.forafox.web_lab_4.models;
+package com.forafox.web_lab_4.models.token;
 
-import com.forafox.web_lab_4.user.User;
+import com.forafox.web_lab_4.models.token.RefreshToken;
+import com.forafox.web_lab_4.models.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;

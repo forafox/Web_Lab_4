@@ -1,9 +1,7 @@
 package com.forafox.web_lab_4.auth;
 
 import com.forafox.web_lab_4.config.JwtService;
-import com.forafox.web_lab_4.exception.TokenRefreshException;
-import com.forafox.web_lab_4.models.RefreshToken;
-import com.forafox.web_lab_4.services.RefreshTokenService;
+import com.forafox.web_lab_4.services.token.RefreshTokenService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -50,18 +48,5 @@ public class AuthenticationController {
         logger.info("Refresh user. Username: " + request.getUsername());
         return ResponseEntity.ok(service.authWithRefreshToken(request));
 
-
-//        String requestRefreshToken = request.getRefreshToken();
-//
-////        return refreshTokenService.findByToken(requestRefreshToken)
-////                .map(refreshTokenService::verifyExpiration)
-////                .map(RefreshToken::getUser)
-////                .map(user -> {
-//////                    String token = jwtService.auth(newuser.getUsername());
-////                    String token = service.auth(request);
-////                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
-////                })
-////                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
-////                        "Refresh token is not in database!"));
     }
 }

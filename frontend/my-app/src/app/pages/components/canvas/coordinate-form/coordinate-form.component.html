@@ -1,0 +1,64 @@
+<div class="max-w-md mx-auto bg-white p-6 rounded-md shadow-md">
+  <h2 class="text-2xl font-semibold mb-4">Coordinate Form</h2>
+
+  <form (ngSubmit)="onSubmitCoordinateForm()" [formGroup]="form">
+  <!-- X Coordinate Checkbox -->
+  <div class="mb-4">
+    <label class="block text-sm font-medium text-gray-600 mb-1">X values:</label>
+    <div class="grid grid-cols-2 gap-2 md:grid-cols-3" id="x-input-wrapper">
+      <div *ngFor="let x of xValues">
+        <input
+          [ngModelOptions]="{standalone: true}"
+          type="checkbox"
+          id="x-{{ x }}"
+          name="x-coordinate"
+          value="{{ x }}"
+          [(ngModel)]="selectedX"
+          (change)="handleCheckboxChange('x', x)"
+          [attr.disabled]="selectedX && selectedX !== x ? true : null"
+        >
+        <label for="x-{{ x }}">{{ x }}</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Y Coordinate Text Input -->
+  <div class="mb-4">
+    <label class="block text-sm font-medium text-gray-600 mb-1">Y (-5:3) Coordinate:</label>
+    <input
+      type="text"
+      id="y-coordinate"
+      name="y-coordinate"
+      class="border rounded-md p-2 w-full"
+      [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="selectedY"
+      (input)="handleYInputChange($event)"
+    >
+  </div>
+
+  <!-- Radius Checkbox -->
+  <div class="mb-4">
+    <label class="block text-sm font-medium text-gray-600 mb-1">Radius:</label>
+    <div class="grid grid-cols-2 gap-2 md:grid-cols-3" id="r-input-wrapper">
+      <div *ngFor="let r of rValues">
+        <input
+          [ngModelOptions]="{standalone: true}"
+          type="checkbox"
+          id="r-{{ r }}"
+          name="r-coordinate"
+          value="{{ r }}"
+          [(ngModel)]="selectedR"
+          (change)="handleCheckboxChange('r', r)"
+          [attr.disabled]="selectedR && selectedR !== r ? true : null"
+        >
+        <label for="r-{{ r }}">{{ r }}</label>
+      </div>
+    </div>
+  </div>
+  </form>
+  <!-- Submit Button -->
+<!--    (click)="getDots()"-->
+  <button
+   (click)="onSubmitCoordinateForm()"
+    class="bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-600" type="submit">Submit</button>
+</div>

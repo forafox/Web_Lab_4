@@ -5,6 +5,11 @@ import {jwtDecode, JwtPayload} from "jwt-decode";
 import {Router, UrlTree} from "@angular/router";
 
 export const USER_STORAGE_KEY = 'APP_TOKEN';
+
+export const reqHeaders = new HttpHeaders({
+  'Authorization': 'Bearer '+localStorage.getItem(USER_STORAGE_KEY)
+})
+
 export interface UserData{
   token: string;
   id: string;

@@ -1,16 +1,29 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Injectable, OnInit, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {HeaderComponent} from "../../header/header.component";
 import {FooterComponent} from "../../footer/footer.component";
+import {DotsService} from "../../../../services/dots/dots.service/dots.service.component";
+import {CoordinateFormComponent} from "../coordinate-form/coordinate-form.component";
 
 @Component({
   selector: 'app-canvas-element',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent],
+  imports: [CommonModule, HeaderComponent, FooterComponent, CoordinateFormComponent, CoordinateFormComponent],
   templateUrl: './canvas-element.component.html',
   styleUrl: './canvas-element.component.css'
 })
+@Injectable({
+  providedIn: 'root'
+})
 export class CanvasElementComponent implements OnInit{
+
+  constructor(public dotsService: DotsService) {
+  }
+
+  getDots(){
+    this.dotsService.getDots();
+  }
+
   @ViewChild('canvas',{static:true})myCanvas!:ElementRef;
   private scaleX: number = 30;
   private scaleY: number = 30;
@@ -201,5 +214,8 @@ export class CanvasElementComponent implements OnInit{
     ctx.fill();
     ctx.closePath();
   }
+
+
+
 
 }

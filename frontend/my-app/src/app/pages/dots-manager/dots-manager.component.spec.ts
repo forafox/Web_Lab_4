@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DotsService } from './dots.service.component';
+import { DotsManagerComponent } from './dots-manager.component';
 
-describe('DotsService', () => {
-  let component: DotsService;
-  let fixture: ComponentFixture<DotsService>;
+describe('DotsManagerComponent', () => {
+  let component: DotsManagerComponent;
+  let fixture: ComponentFixture<DotsManagerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DotsService]
+      imports: [DotsManagerComponent]
     })
     .compileComponents();
-
-    fixture = TestBed.createComponent(DotsService);
+    
+    fixture = TestBed.createComponent(DotsManagerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

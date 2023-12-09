@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DotsService } from './dots.service.component';
+import { CoordinateFormComponent } from './coordinate-form.component';
 
-describe('DotsService', () => {
-  let component: DotsService;
-  let fixture: ComponentFixture<DotsService>;
+describe('CoordinateFormComponent', () => {
+  let component: CoordinateFormComponent;
+  let fixture: ComponentFixture<CoordinateFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DotsService]
+      imports: [CoordinateFormComponent]
     })
     .compileComponents();
-
-    fixture = TestBed.createComponent(DotsService);
+    
+    fixture = TestBed.createComponent(CoordinateFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

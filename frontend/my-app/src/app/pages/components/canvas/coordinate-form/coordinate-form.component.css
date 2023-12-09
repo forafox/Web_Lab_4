@@ -1,0 +1,6 @@
+#r-input-wrapper > div > label {
+  @apply ml-2;
+}
+#x-input-wrapper > div > label {
+  @apply ml-2;
+}

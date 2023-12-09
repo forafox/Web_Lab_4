@@ -5,8 +5,8 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {LoginComponent} from "./pages/login/login.component";
 import {HeaderComponent} from "./pages/components/header/header.component";
-import {OnInit} from '@angular/core';
 import {MainComponent} from "./pages/main/main.component";
+import {DotsManagerComponent} from "./pages/dots-manager/dots-manager.component";
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -19,6 +19,7 @@ import {MainComponent} from "./pages/main/main.component";
     MainComponent,
     HttpClientModule,
     HeaderComponent,
+    DotsManagerComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

@@ -16,13 +16,6 @@ import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 })
 export class LoginComponent {
 
-  // isLoginPage: boolean = false;
-  //
-  // togglePage() {
-  //   console.log("Changed loginPage",this.isLoginPage)
-  //   this.isLoginPage = !this.isLoginPage;
-  // }
-
   form =this.fb.nonNullable.group({
     username:['',[Validators.required]],
     password: ['',[Validators.required,Validators.minLength(6)]],

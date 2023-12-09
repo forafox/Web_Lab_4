@@ -36,17 +36,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         logger.info("Filtering JWT.");
-//        logger.info("Path info:");
         final String authHeader = request.getHeader("Authorization");
 
         if(request.getMethod().equalsIgnoreCase("options")) {
-//            response.setHeader("Access-Control-Allow-Origin", "*");
-//            response.setHeader("Access-Control-Allow-Headers", "*");
-//            response.setHeader("Access-Control-Allow-Methods", "*");
-//            response.s
-//            etHeader("Access-Control-Allow-Method", "Authorization");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Access-Control-Allow-Headers", "*");
+            response.setHeader("Access-Control-Allow-Methods", "*");
             response.setStatus(200);
-//            filterChain.doFilter(request, response);
+//            filterChain.doFя ilter(request, response);
             return;
         }
 

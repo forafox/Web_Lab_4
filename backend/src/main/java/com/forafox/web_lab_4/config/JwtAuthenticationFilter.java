@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Optional;
+
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -35,18 +37,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         logger.info("Filtering JWT.");
         final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String username;
+
         if (authHeader == null || !authHeader.startsWith("Bearer")) {
             logger.info("No Bearer token or it is not a Bearer");
             filterChain.doFilter(request, response);
             return;
         }
-        jwt = authHeader.substring(7);
-        username = jwtService.extractUsername(jwt);
-        if(username != null && SecurityContextHolder.getContext().getAuthentication()==null){
-            UserDetails userDetails =this.userDetailsService.loadUserByUsername(username);
-            if(jwtService.isTokenValid(jwt,userDetails)){
+        final String jwt = authHeader.substring(7);
+        Optional<String> username = jwtService.extractUsername(jwt).describeConstable();
+        if (username.isPresent() && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username.get());
+            if (jwtService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
@@ -59,6 +60,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         logger.info("Proceeding filtering. Leaving the JwtFilter");
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 }

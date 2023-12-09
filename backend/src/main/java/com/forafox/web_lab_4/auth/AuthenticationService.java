@@ -28,11 +28,11 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
-                .username(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
+                .username(request.username())
+                .password(passwordEncoder.encode(request.password()))
                 .role(Role.USER)
-                .age(request.getAge())
-                .email(request.getEmail())
+                .age(request.age())
+                .email(request.email())
                 .build();
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);
@@ -46,11 +46,11 @@ public class AuthenticationService {
     public AuthenticationResponse auth(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
-                        request.getPassword()
+                        request.username(),
+                        request.password()
                 )
         );
-        var user = repository.findByUsername(request.getUsername())
+        var user = repository.findByUsername(request.username())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = refreshTokenService.createRefreshToken(user.getId());
@@ -60,20 +60,24 @@ public class AuthenticationService {
                 .build();
     }
 
-    public TokenRefreshResponse authWithRefreshToken(TokenRefreshRequest request) {
+    public TokenRefreshResponse refreshAccessToken(TokenRefreshRequest request) {
 
-        String requestRefreshToken = request.getRefreshToken();
+        String requestRefreshToken = request.refreshToken();
 
-        Optional<RefreshToken> refreshToken2 = refreshTokenService.findByToken(requestRefreshToken);
-        refreshTokenService.verifyExpiration(refreshToken2.get());
-        User user2 = refreshToken2.get().getUser();
-        jwtService.generateToken(user2);
-        var jwtToken = jwtService.generateToken(user2);
-        var refreshToken = refreshTokenService.createRefreshToken(user2.getId());
+        Optional<RefreshToken> refreshTokenFromDB = refreshTokenService.findByToken(requestRefreshToken);
+        if (refreshTokenFromDB.isEmpty()) {
+            throw new RuntimeException();//TO DO
+        } else {
+            refreshTokenService.verifyExpiration(refreshTokenFromDB.get());
+            User user = refreshTokenFromDB.get().getUser();
+            jwtService.generateToken(user);
+            var jwtToken = jwtService.generateToken(user);
+            var refreshToken = refreshTokenService.createRefreshToken(user.getId());
 
-        return TokenRefreshResponse.builder()
-                .accessToken(jwtToken)
-                .refreshToken(refreshToken)
-                .build();
+            return TokenRefreshResponse.builder()
+                    .accessToken(jwtToken)
+                    .refreshToken(refreshToken)
+                    .build();
+        }
     }
 }

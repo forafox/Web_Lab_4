@@ -1,8 +1,10 @@
 package com.forafox.web_lab_4.services.token;
 
 import com.forafox.web_lab_4.exception.TokenRefreshException;
+import com.forafox.web_lab_4.exception.UserNotFoundException;
 import com.forafox.web_lab_4.models.token.RefreshToken;
 import com.forafox.web_lab_4.models.token.RefreshTokenRepository;
+import com.forafox.web_lab_4.models.user.User;
 import com.forafox.web_lab_4.models.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +15,7 @@ import java.util.UUID;
 
 @Service
 public class RefreshTokenService {
-    private Long refreshTokenDurationMs= 86400000L;
+    private Long refreshTokenDurationMs = 86400000L;
 
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
@@ -25,17 +27,17 @@ public class RefreshTokenService {
         return refreshTokenRepository.findByToken(token);
     }
 
-    public String createRefreshToken(Integer userId) {
+    public String createRefreshToken(Long userId) {
         RefreshToken refreshToken;
 
-       Optional<RefreshToken> refreshToken1 = refreshTokenRepository.getByUserId(userId);
+        Optional<RefreshToken> refreshToken1 = refreshTokenRepository.getByUserId(userId);
 
-       if(refreshToken1.isEmpty()){
-           refreshToken= new RefreshToken();
-           refreshToken.setUser(userRepository.findById(userId).get());
-       }else{
-           refreshToken=refreshTokenRepository.getByUserId(userId).get();
-       }
+        if (refreshToken1.isEmpty()) {
+            refreshToken = new RefreshToken();
+            refreshToken.setUser(userRepository.findById(userId).get());
+        } else {
+            refreshToken = refreshTokenRepository.getByUserId(userId).get();
+        }
 
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         refreshToken.setToken(UUID.randomUUID().toString());
@@ -54,6 +56,11 @@ public class RefreshTokenService {
     }
 
     public int deleteByUserId(Long userId) {
-        return refreshTokenRepository.deleteByUser(userRepository.findById(Math.toIntExact(userId)).get());
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            return refreshTokenRepository.deleteByUser(user.get());
+        } else {
+            throw new UserNotFoundException();
+        }
     }
 }

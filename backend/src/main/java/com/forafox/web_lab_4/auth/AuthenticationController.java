@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
 
     @Autowired
-    RefreshTokenService refreshTokenService;
+    private final RefreshTokenService refreshTokenService;
 
     @Autowired
-    JwtService jwtService;
+    private final JwtService jwtService;
 
     private final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
     private final AuthenticationService service;
@@ -29,7 +29,7 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
     ){
-        logger.info("Registering a new user. Username: " + request.getUsername());
+        logger.info("Registering a new user. Username: " + request.username());
         return ResponseEntity.ok(service.register(request));
     }
 
@@ -37,7 +37,7 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> auth(
             @RequestBody AuthenticationRequest request
     ){
-        logger.info("Authenticating new user. Username: " + request.getUsername());
+        logger.info("Authenticating new user. Username: " + request.username());
         return ResponseEntity.ok(service.auth(request));
     }
 
@@ -45,8 +45,8 @@ public class AuthenticationController {
     public ResponseEntity<?> refreshtoken(
             @Valid @RequestBody TokenRefreshRequest request
     ) {
-        logger.info("Refresh user. Username: " + request.getUsername());
-        return ResponseEntity.ok(service.authWithRefreshToken(request));
+        logger.info("Refresh user. Username: " + request.username());
+        return ResponseEntity.ok(service.refreshAccessToken(request));
 
     }
 }

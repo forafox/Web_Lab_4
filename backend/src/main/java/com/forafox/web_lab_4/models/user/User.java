@@ -23,10 +23,12 @@ public class User implements UserDetails {
     @GeneratedValue
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String username;
 
     private String password;
 
+    @Column(unique = true, nullable = false)
     private String email;
 
     private Integer age;

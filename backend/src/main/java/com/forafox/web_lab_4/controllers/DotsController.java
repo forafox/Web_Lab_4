@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
-@RequestMapping("/api/v1/canvas/")
+@RequestMapping("/api/v2/canvas/")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
 public class DotsController {
@@ -31,7 +33,9 @@ public class DotsController {
     }
 
     @GetMapping("/dots")
-    public ResponseEntity<DotsResponse> getAllDots() {
+//    @CrossOrigin(origins = "http://localhost:4200")
+    public ResponseEntity<DotsResponse> getAllDots(Principal principal) {
+        logger.info("Principal username: " + principal.getName());
         logger.info("Request to receive points");
         return ResponseEntity.ok(dotService.getDots());
     }

@@ -36,7 +36,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         logger.info("Filtering JWT.");
+//        logger.info("Path info:");
         final String authHeader = request.getHeader("Authorization");
+
+        if(request.getMethod().equalsIgnoreCase("options")) {
+//            response.setHeader("Access-Control-Allow-Origin", "*");
+//            response.setHeader("Access-Control-Allow-Headers", "*");
+//            response.setHeader("Access-Control-Allow-Methods", "*");
+//            response.s
+//            etHeader("Access-Control-Allow-Method", "Authorization");
+            response.setStatus(200);
+//            filterChain.doFilter(request, response);
+            return;
+        }
 
         if (authHeader == null || !authHeader.startsWith("Bearer")) {
             logger.info("No Bearer token or it is not a Bearer");

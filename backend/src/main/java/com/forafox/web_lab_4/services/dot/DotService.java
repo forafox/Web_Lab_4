@@ -26,9 +26,9 @@ public class DotService {
     @Autowired
     private UserRepository userRepository;
 
-    public DotResponse saveDot(DotRequest dotRequest) {
+    public DotResponse saveDot(DotRequest dotRequest,String username) {
 
-        Optional<User> user  = userRepository.findByUsername(dotRequest.username());
+        Optional<User> user  = userRepository.findByUsername(username);
 
         if(user.isPresent()) {
             Dot dot = Dot.builder()

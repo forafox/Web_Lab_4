@@ -26,10 +26,11 @@ public class DotsController {
 
     @PostMapping("/dot")
     public ResponseEntity<DotResponse> newDot(
+            Principal principal,
             @RequestBody DotRequest dotRequest
     ) {
         logger.info("Request with a new point");
-        return ResponseEntity.ok(dotService.saveDot(dotRequest));
+        return ResponseEntity.ok(dotService.saveDot(dotRequest,principal.getName()));
     }
 
     @GetMapping("/dots")

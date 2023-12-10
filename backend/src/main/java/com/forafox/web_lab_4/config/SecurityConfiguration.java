@@ -48,10 +48,23 @@ public class SecurityConfiguration {
                         .authenticated()
                         .anyRequest().permitAll()
                 )
-                .sessionManagement(c->c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 //                .cors(AbstractHttpConfigurer::disable);
         return http.build();
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/api/**")
+                        .allowedOrigins("http://localhost:4200")
+                        .allowedMethods("POST", "PUT", "GET")
+                        .allowedHeaders("Authorization", "Content-Type");
+            }
+        };
     }
 }

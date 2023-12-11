@@ -119,8 +119,11 @@ public class DotService {
     }
     private static class DotsChecker {
         public static String isHit(double x,double y,double r) {
-
-            return ((isCircleZone(x, y, r) || isTriangleZone(x, y, r) || isRectangleZone(x, y, r))) ? "Hit!" : "Miss!";
+            if(r==0) {
+                return "Miss";
+            }else{
+                return ((isCircleZone(x, y, r) || isTriangleZone(x, y, r) || isRectangleZone(x, y, r))) ? "Hit!" : "Miss!";
+            }
 
         }
 
@@ -139,7 +142,7 @@ public class DotService {
             double a2 = (x2 - x) * (y3 - y2) - (x3 - x2) * (y2 - y);
             double a3 = (x3 - x) * (y1 - y3) - (x1 - x3) * (y3 - y);
 
-            return ((x <= 0) && (y <= 0) && (a1 >= 0 && a2 >= 0 && a3 >= 0) || (a1 <= 0 && a2 <= 0 && a3 <= 0));
+            return ((x <= 0) && (y >= 0) && (a1 >= 0 && a2 >= 0 && a3 >= 0) || (a1 <= 0 && a2 <= 0 && a3 <= 0));
         }
 
         private static String getCreateTime(){

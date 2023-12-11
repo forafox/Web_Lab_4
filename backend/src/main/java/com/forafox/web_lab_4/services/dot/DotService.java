@@ -26,18 +26,18 @@ public class DotService {
     @Autowired
     private UserRepository userRepository;
 
-    public DotResponse saveDot(DotRequest dotRequest,String username) {
+    public DotResponse saveDot(DotRequest dotRequest, String username) {
 
-        Optional<User> user  = userRepository.findByUsername(username);
+        Optional<User> user = userRepository.findByUsername(username);
 
-        if(user.isPresent()) {
+        if (user.isPresent()) {
             Dot dot = Dot.builder()
                     .user(user.get())
                     .x(dotRequest.x())
                     .y(dotRequest.y())
                     .r(dotRequest.r())
                     .time(DotsChecker.getCreateTime())//TO DO
-                    .status(DotsChecker.isHit(dotRequest.x(),dotRequest.y(),dotRequest.r()))
+                    .status(DotsChecker.isHit(dotRequest.x(), dotRequest.y(), dotRequest.r()))
                     .build();
             repository.save(dot);
 
@@ -50,15 +50,15 @@ public class DotService {
                     .username(dot.getUser().getUsername())
                     .time(dot.getTime())
                     .build();
-        }else {
+        } else {
             throw new RuntimeException(); //TO DO
         }
     }
 
     public DotsResponse getDots() {
-         List<Dot> dotsFromDB=repository.findAll();
-         List<DotResponse> dotResponses = new ArrayList<>();
-        for (Dot dot: dotsFromDB) {
+        List<Dot> dotsFromDB = repository.findAll();
+        List<DotResponse> dotResponses = new ArrayList<>();
+        for (Dot dot : dotsFromDB) {
             dotResponses.add(DotResponse.builder()
                     .status(dot.getStatus())
                     .x(dot.getX())
@@ -69,25 +69,27 @@ public class DotService {
                     .time(dot.getTime())
                     .build());
         }
-            return DotsResponse.builder()
-                    .dots(dotResponses)
-                    .build();
+        return DotsResponse.builder()
+                .dots(dotResponses)
+                .build();
     }
+
     public DotsResponse clearDotsInBD() {
-       List<Dot> dots=repository.findAll();
-       if(dots.isEmpty()){
-           throw new DotNotFoundException();
-       }else{
-           return DotsResponse.builder()
-                   .dots(null)
-                   .build();
-       }
-    }
-    public DotResponse getById(Long id){
-        Optional<Dot> dot = repository.findById(id);
-        if(dot.isEmpty()){
+        List<Dot> dots = repository.findAll();
+        if (dots.isEmpty()) {
             throw new DotNotFoundException();
-        }else{
+        } else {
+            return DotsResponse.builder()
+                    .dots(null)
+                    .build();
+        }
+    }
+
+    public DotResponse getById(Long id) {
+        Optional<Dot> dot = repository.findById(id);
+        if (dot.isEmpty()) {
+            throw new DotNotFoundException();
+        } else {
             return DotResponse.builder()
                     .status(dot.get().getStatus())
                     .x(dot.get().getX())
@@ -102,9 +104,9 @@ public class DotService {
 
     public DotResponse deleteDot(Long id) {
         Optional<Dot> dot = repository.findById(id);//TO DO
-        if(dot.isEmpty()) {
+        if (dot.isEmpty()) {
             throw new DotNotFoundException();
-        }else{
+        } else {
             repository.deleteById(id);
             return DotResponse.builder()
                     .status(dot.get().getStatus())
@@ -117,35 +119,42 @@ public class DotService {
                     .build();
         }
     }
-    private static class DotsChecker {
-        public static String isHit(double x,double y,double r) {
-            if(r==0) {
+
+    public static class DotsChecker {
+        public static String isHit(double x, double y, double r) {
+            if (r == 0) {
                 return "Miss";
-            }else{
+            } else {
                 return ((isCircleZone(x, y, r) || isTriangleZone(x, y, r) || isRectangleZone(x, y, r))) ? "Hit!" : "Miss!";
             }
-
         }
 
         private static boolean isRectangleZone(double x, double y, double r) {
-            return (x >= 0) && (x <= r / 2) && (y <= 0) && (y >= -r);
+            if (r < 0) {
+                return (x <= 0) && (x >= r / 2) && (y >= 0) && (y <= -r);
+            } else {
+                return (x >= 0) && (x <= r / 2) && (y <= 0) && (y >= -r);
+            }
         }
 
         private static boolean isCircleZone(double x, double y, double r) {
-            return ((x * x + y * y) <= (r * r)) && (x >= 0) && (y >= 0);
+            return ((x * x + y * y) <= (r * r)) && ((r >= 0 && x >= 0 && y >= 0) || (r < 0 && x <= 0 && y <= 0));
         }
 
         private static boolean isTriangleZone(double x, double y, double r) {
-//        (1, 2, 3 - вершины треугольника, 0 - точка)
-            double x1 = -r , x2 = 0, x3 = 0, y1 = 0, y2 = 0, y3 = r / 2;
-            double a1 = (x1 - x) * (y2 - y1) - (x2 - x1) * (y1 - y);
-            double a2 = (x2 - x) * (y3 - y2) - (x3 - x2) * (y2 - y);
-            double a3 = (x3 - x) * (y1 - y3) - (x1 - x3) * (y3 - y);
+            double x1 = -r, x2 = 0, x3 = 0, y1 = 0, y2 = 0, y3 = r / 2;
+            double a1 = (x - x1) * (y2 - y1) - (x2 - x1) * (y - y1);
+            double a2 = (x - x2) * (y3 - y2) - (x3 - x2) * (y - y2);
+            double a3 = (x - x3) * (y1 - y3) - (x1 - x3) * (y - y3);
 
-            return ((x <= 0) && (y >= 0) && (a1 >= 0 && a2 >= 0 && a3 >= 0) || (a1 <= 0 && a2 <= 0 && a3 <= 0));
+            if (r < 0) {
+                return ((x >= 0) && (y <= 0) && (a1 <= 0 && a2 <= 0 && a3 <= 0)) || (a1 >= 0 && a2 >= 0 && a3 >= 0);
+            } else {
+                return ((x <= 0) && (y >= 0) && (a1 >= 0 && a2 >= 0 && a3 >= 0) || (a1 <= 0 && a2 <= 0 && a3 <= 0));
+            }
         }
 
-        private static String getCreateTime(){
+        private static String getCreateTime() {
             Date date = new Date(System.currentTimeMillis());
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             return formatter.format(date);

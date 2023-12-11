@@ -1,18 +1,15 @@
-import {Component, Injectable} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {BehaviorSubject, map, Observable} from "rxjs";
-import {jwtDecode, JwtPayload} from "jwt-decode/build/esm";
-import {reqHeaders, USER_STORAGE_KEY, UserData} from "../../auth.service";
-import {data} from "autoprefixer";
+import {Injectable} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {BehaviorSubject, Observable} from "rxjs";
+import {reqHeaders} from "../../auth.service";
 
 
-export interface DotsList{
-  dots : Dot[];
+export interface DotsList {
+  dots: Dot[];
 }
 
 
-export interface Dot{
+export interface Dot {
   id: number;
   x: number;
   y: number;
@@ -21,16 +18,18 @@ export interface Dot{
   time: string;
   username: string;
 }
+
 @Injectable({
   providedIn: 'root'
 })
 export class DotsService {
 
 
-  private dotsSubject = new BehaviorSubject<DotsList>({ dots: [] });
+  private dotsSubject = new BehaviorSubject<DotsList>({dots: []});
   dots$ = this.dotsSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   getDots(): Observable<DotsList> {
     this.http.get<DotsList>('http://localhost:8080/api/v2/canvas/dots', {
@@ -40,6 +39,24 @@ export class DotsService {
     return this.dots$;
   }
 
+  onSubmitCoordinateForm(x: number, y: number, r: number) {
+    console.log("SUBMIT: ", x, " ", y, " ", r);
+
+    return this.http.post('http://localhost:8080/api/v2/canvas/dot', {
+      x,
+      y,
+      r,
+    }, {headers: reqHeaders}).subscribe(
+      data => {
+        console.log("saveDot! : ", data)
+        this.getDots().subscribe(dots => {
+          // Обновляем данные или выполняем другие действия
+          // Например, this.currentDotList = dots;
+          // console.log("Updated dots: ", dots);
+        });
+      }
+    );
+  }
 
 
 }

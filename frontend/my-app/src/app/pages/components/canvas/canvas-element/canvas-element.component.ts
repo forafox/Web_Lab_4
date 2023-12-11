@@ -10,7 +10,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {HeaderComponent} from "../../header/header.component";
 import {FooterComponent} from "../../footer/footer.component";
 import {Dot, DotsList, DotsService} from "../../../../services/dots/dots.service/dots.service.component";
@@ -28,47 +28,46 @@ import {DataServiceComponent} from "./data-service/data-service.component";
 @Injectable({
   providedIn: 'root'
 })
-export class CanvasElementComponent implements OnInit{
+export class CanvasElementComponent implements OnInit {
 
   constructor(public dotsService: DotsService,
               private cdr: ChangeDetectorRef,
-              private dataService: DataServiceComponent) {
+              private dataService: DataServiceComponent,
+  ) {
   }
 
-  #getDots(){
+  #getDots() {
     this.dotsService.getDots();
   }
 
-  @ViewChild('canvas',{static:true})myCanvas!:ElementRef;
-  private isViewInit = false;
+  @ViewChild('canvas', {static: true}) myCanvas!: ElementRef;
 
   private scaleX: number = 30;
   private scaleY: number = 30;
-  private defaultR: number=2;
-  canvasPlotWidth: number =0 ;
-  canvasPlotHeight: number=0;
+  canvasPlotWidth: number = 0;
+  canvasPlotHeight: number = 0;
   private xAxis: number = 0;
   private yAxis: number = 0;
 
   private context!: CanvasRenderingContext2D;
 
-  private dotList: DotsList = {dots: []};
   private currentDotList: DotsList = {dots: []};
 
-  @Input() currentR: number=0;
+  @Input() currentR: number = 0;
 
   //коэффициент смещения текста от осей
-   shiftNames:number = 5;
-   shiftAxisNames:number = 20;
+  shiftNames: number = 5;
+  shiftAxisNames: number = 20;
 
 
   private dotsSubscription!: Subscription;
+
   ngOnInit(): void {
 
-    const canvas: HTMLCanvasElement =this.myCanvas.nativeElement;
+    const canvas: HTMLCanvasElement = this.myCanvas.nativeElement;
 
     this.context = canvas.getContext('2d')!;
-    if(this.context) {
+    if (this.context) {
 
       this.dotsSubscription = this.dotsService.dots$.subscribe((dots) => {
         if (this.currentDotList !== dots) {
@@ -81,8 +80,10 @@ export class CanvasElementComponent implements OnInit{
         this.#draw();
       });
 
-       this.canvasPlotWidth = canvas.clientWidth;
-       this.canvasPlotHeight = canvas.clientHeight;
+      canvas.addEventListener('click', (event) => this.handleCanvasClick(event, canvas, this.context));
+
+      this.canvasPlotWidth = canvas.clientWidth;
+      this.canvasPlotHeight = canvas.clientHeight;
 
       this.xAxis = Math.round(this.canvasPlotWidth / this.scaleX / 2) * this.scaleX;
       this.yAxis = Math.round(this.canvasPlotHeight / this.scaleY / 2) * this.scaleY;
@@ -91,11 +92,27 @@ export class CanvasElementComponent implements OnInit{
       this.context.textBaseline = "top";
       this.#getDots();
       this.#draw()
-    }else{
+    } else {
       console.log("Canvas doesn't work")
     }
   }
 
+  handleCanvasClick(event: MouseEvent, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+    const x = event.clientX - canvas.getBoundingClientRect().left;
+    const y = event.clientY - canvas.getBoundingClientRect().top;
+
+    let tableX = (x - this.xAxis) / this.scaleX;
+    let tableY = (this.yAxis - y) / this.scaleY;
+
+    // Рисуем точку в месте нажатия
+    ctx.beginPath();
+    ctx.arc(x, y, 4, 0, 2 * Math.PI);
+    ctx.fillStyle = "#2b2d42"; // Цвет точки
+    ctx.fill();
+
+    this.dotsService.onSubmitCoordinateForm(Number(tableX.toFixed(2)), Number(tableY.toFixed(2)), this.currentR);
+
+  }
 
   //вызывается при загрузке html-страницы и потом после передачи ей значений
   #draw() {
@@ -103,32 +120,25 @@ export class CanvasElementComponent implements OnInit{
     this.#drawGrid();
     this.#drawAxes();
 
-    // if (this.currentR == 0) {
-    //   this.currentR = this.defaultR
-    //   this.#drawText( this.defaultR);
-    //   this.#drawPolygon( this.defaultR);
-    // } else {
-    //   this.#drawText( this.currentR);
-    //   this.#drawPolygon(this.currentR);
-    // }
-    this.#drawText( this.currentR);
+    this.#drawText(this.currentR);
     this.#drawPolygon(this.currentR);
 
-    this.currentDotList.dots.forEach((dot)=>
-    console.log(dot))
+    this.currentDotList.dots.forEach((dot) =>
+      console.log(dot))
 
     if (this.currentDotList.dots !== undefined) {
       this.currentDotList.dots.forEach((point) => {
         let color = point.status === "Hit!" ? "green" : "red";
         if (point.r === Number(this.currentR)) {
-          this.#drawPoint(point.x, point.y, point.r,color);
+          this.#drawPoint(point.x, point.y, point.r, color);
         }
       });
     }
 
   }
+
   //рисование сетки - всегда статично
-  #drawGrid(){
+  #drawGrid() {
     this.context.beginPath();
     this.context.strokeStyle = "#ced0ce";
     //Горизонтальные линии
@@ -145,8 +155,9 @@ export class CanvasElementComponent implements OnInit{
     this.context.stroke();
     this.context.closePath();
   }
+
   //рисование главных осей - всегда статично
-  #drawAxes(){
+  #drawAxes() {
     this.context.font = `${Math.round(this.scaleX / 2)}px Arial`;
     this.context.fillStyle = "black";
     this.context.beginPath();
@@ -165,7 +176,7 @@ export class CanvasElementComponent implements OnInit{
   }
 
   //рисование подписей к главным осям - зависит от R
-  #drawText(r:number){
+  #drawText(r: number) {
     this.context.fillStyle = "#4f4f4f";
     this.context.font = `${Math.round((r * 10) / 2)}px Arial`;
 
@@ -188,7 +199,7 @@ export class CanvasElementComponent implements OnInit{
     );
     this.context.fillText(
       "R",
-      this.xAxis + (this.scaleX * r)  + this.shiftNames,
+      this.xAxis + (this.scaleX * r) + this.shiftNames,
       this.yAxis + this.shiftNames
     );
 
@@ -215,13 +226,15 @@ export class CanvasElementComponent implements OnInit{
     );
 
   }
-  #drawPolygon(r:number){
+
+  #drawPolygon(r: number) {
     this.#drawRect(r);
     this.#drawTriangle(r);
     this.#drawArc(r);
   }
+
 //рисование прямоугольника - зависит от R
-  #drawRect(r:number){
+  #drawRect(r: number) {
     this.context.beginPath();
     // this.context.rect(xAxis - scaleX * r, yAxis, scaleX * r, scaleX * (r / 2));
     this.context.rect(this.xAxis, this.yAxis, this.scaleX * r / 2, this.scaleY * r);
@@ -233,14 +246,14 @@ export class CanvasElementComponent implements OnInit{
   }
 
   //рисование круга - зависит от R
-  #drawArc(r:number){
+  #drawArc(r: number) {
     this.context.beginPath();
-    this.context.moveTo( this.xAxis,  this.yAxis);
-    if(r>=0) {
+    this.context.moveTo(this.xAxis, this.yAxis);
+    if (r >= 0) {
       this.context.arc(this.xAxis, this.yAxis, this.scaleX * (r), -Math.PI / 2, 0, false);
-    }else{
-      r=Math.abs(r);
-      this.context.arc(this.xAxis, this.yAxis, this.scaleX * (r), Math.PI/2 , Math.PI , false);
+    } else {
+      r = Math.abs(r);
+      this.context.arc(this.xAxis, this.yAxis, this.scaleX * (r), Math.PI / 2, Math.PI, false);
     }
     this.context.closePath();
     this.context.strokeStyle = "#ffba08";
@@ -248,8 +261,9 @@ export class CanvasElementComponent implements OnInit{
     this.context.fill();
     this.context.stroke();
   }
+
   //рисование треугольника - зависит от R
-  #drawTriangle(r:number){
+  #drawTriangle(r: number) {
     this.context.beginPath();
     this.context.moveTo(this.xAxis, this.yAxis);
     this.context.lineTo(this.xAxis, this.yAxis - this.scaleX * (r / 2));
@@ -260,8 +274,9 @@ export class CanvasElementComponent implements OnInit{
     this.context.fill();
     this.context.stroke();
   }
+
 //рисование точки при наличии значений x, y
-  #drawPoint(x:number,y:number,r:number,color:string){
+  #drawPoint(x: number, y: number, r: number, color: string) {
     console.log("in drawPoint")
     this.context.beginPath();
     const scaledX = this.xAxis + x * this.scaleX;
@@ -271,11 +286,4 @@ export class CanvasElementComponent implements OnInit{
     this.context.fill();
     this.context.closePath();
   }
-
-  // updateCurrentR(newR: number) {
-  //   this.currentR = newR;
-  //   console.log("CHANGED r")
-  //   this.#draw(); //WHAT
-  // }
-
 }

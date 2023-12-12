@@ -123,9 +123,6 @@ export class CanvasElementComponent implements OnInit {
     this.#drawText(this.currentR);
     this.#drawPolygon(this.currentR);
 
-    this.currentDotList.dots.forEach((dot) =>
-      console.log(dot))
-
     if (this.currentDotList.dots !== undefined) {
       this.currentDotList.dots.forEach((point) => {
         let color = point.status === "Hit!" ? "green" : "red";
@@ -277,7 +274,6 @@ export class CanvasElementComponent implements OnInit {
 
 //рисование точки при наличии значений x, y
   #drawPoint(x: number, y: number, r: number, color: string) {
-    console.log("in drawPoint")
     this.context.beginPath();
     const scaledX = this.xAxis + x * this.scaleX;
     const scaledY = this.yAxis - y * this.scaleY;

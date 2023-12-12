@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {AuthService} from "../../../services/auth.service";
 import {Router, RouterLink} from "@angular/router";
 import {LoginComponent} from "../../login/login.component";
@@ -19,27 +19,15 @@ export class HeaderComponent implements OnInit {
     // Подписываемся на изменения
     this.authService.isLoggedIn$.subscribe((isLoggedIn) => {
       this.isLoggedIn = isLoggedIn;
-      console.log("Поменялось на ",isLoggedIn)
     });
   }
 
-  constructor(private authService: AuthService,private router: Router,private loginComponent: LoginComponent ){
-    // if(authService.isLoggedInWithoutRouts()){
-    //   this.isLoggedIn = true;
-    // }
+  constructor(private authService: AuthService, private router: Router, private loginComponent: LoginComponent) {
   }
 
-  togglePage() {
-    this.isLoggedIn = !this.isLoggedIn;
-  }
-
-  logout(){
+  logout() {
     this.authService.signOut();
     this.router.navigateByUrl('/')
   }
-
-  // togglePageLoginComponent(){
-  //   this.loginComponent.togglePage();
-  // }
 
 }

@@ -1,5 +1,5 @@
 import {Component, Injectable} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {BehaviorSubject, Observable} from "rxjs";
 
 @Component({

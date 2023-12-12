@@ -3,7 +3,6 @@ import {CommonModule} from '@angular/common';
 import {CanvasElementComponent} from "../canvas-element/canvas-element.component";
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
-import {reqHeaders} from "../../../../services/auth.service";
 import {DotsService} from "../../../../services/dots/dots.service/dots.service.component";
 import {DataServiceComponent} from "../canvas-element/data-service/data-service.component";
 

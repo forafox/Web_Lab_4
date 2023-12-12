@@ -1,8 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
-import {reqHeaders} from "../../auth.service";
-
 
 export interface DotsList {
   dots: Dot[];
@@ -32,21 +30,17 @@ export class DotsService {
   }
 
   getDots(): Observable<DotsList> {
-    this.http.get<DotsList>('http://localhost:8080/api/v2/canvas/dots', {
-      headers: reqHeaders,
-    }).subscribe(dots => this.dotsSubject.next(dots));
-
+    this.http.get<DotsList>('http://localhost:8080/api/v2/canvas/dots').subscribe(dots => this.dotsSubject.next(dots));
     return this.dots$;
   }
 
   onSubmitCoordinateForm(x: number, y: number, r: number) {
     console.log("SUBMIT: ", x, " ", y, " ", r);
-
     return this.http.post('http://localhost:8080/api/v2/canvas/dot', {
       x,
       y,
       r,
-    }, {headers: reqHeaders}).subscribe(
+    }).subscribe(
       data => {
         console.log("saveDot! : ", data)
         this.getDots().subscribe(dots => {

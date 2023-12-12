@@ -1,4 +1,5 @@
 package com.forafox.web_lab_4.controllers;
+
 import com.forafox.web_lab_4.DTO.DotRequest;
 import com.forafox.web_lab_4.DTO.DotResponse;
 import com.forafox.web_lab_4.DTO.DotsResponse;
@@ -30,7 +31,7 @@ public class DotsController {
             @RequestBody DotRequest dotRequest
     ) {
         logger.info("Request with a new point");
-        return ResponseEntity.ok(dotService.saveDot(dotRequest,principal.getName()));
+        return ResponseEntity.ok(dotService.saveDot(dotRequest, principal.getName()));
     }
 
     @GetMapping("/dots")
@@ -52,7 +53,7 @@ public class DotsController {
     @DeleteMapping("/dot/{id}")
     public ResponseEntity<DotResponse> deleteDotById(
             @PathVariable Long id
-    ){
+    ) {
         logger.info("Request to delete a point");
         return ResponseEntity.ok(dotService.deleteDot(id));
     }

@@ -1,6 +1,7 @@
 package com.forafox.web_lab_4.config;
 
 import com.forafox.web_lab_4.auth.AuthenticationController;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,8 +39,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         logger.info("Filtering JWT.");
         final String authHeader = request.getHeader("Authorization");
 
-        if(request.getMethod().equalsIgnoreCase("options")) {
-            filterChain.doFilter(request,response);
+        if (request.getMethod().equalsIgnoreCase("options")) {
+            filterChain.doFilter(request, response);
             return;
         }
 
@@ -49,22 +50,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         final String jwt = authHeader.substring(7);
-        Optional<String> username = jwtService.extractUsername(jwt).describeConstable();
-        if (username.isPresent() && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username.get());
-            if (jwtService.isTokenValid(jwt, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+        try {
+            Optional<String> username = jwtService.extractUsername(jwt).describeConstable();
+            if (username.isPresent() && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username.get());
+                if (jwtService.isTokenValid(jwt, userDetails)) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
+                    authToken.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request)
+                    );
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
+            logger.info("Proceeding filtering. Leaving the JwtFilter");
+            filterChain.doFilter(request, response);
+        } catch (ExpiredJwtException e) {
+            response.setStatus(401);
         }
-        logger.info("Proceeding filtering. Leaving the JwtFilter");
-        filterChain.doFilter(request, response);
     }
 }

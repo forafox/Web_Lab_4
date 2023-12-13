@@ -58,7 +58,7 @@ export class RegistrationComponent {
 
 
   form = this.fb.nonNullable.group({
-    username: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
+    username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
     password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
     age: ['', [Validators.required, this.ageValidator]],
     email: ['', [Validators.required, Validators.email, Validators.maxLength(30)]],
@@ -119,7 +119,7 @@ export class RegistrationComponent {
     if (requiredError) {
       return 'Username is required';
     } else if (minLengthError) {
-      return 'Username must be at least 6 characters';
+      return 'Username must be at least 3 characters';
     } else if (maxLengthError) {
       return 'Username must be no more than 20 characters'
     }

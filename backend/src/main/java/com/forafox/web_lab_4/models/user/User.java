@@ -1,6 +1,10 @@
 package com.forafox.web_lab_4.models.user;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,13 +28,19 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(unique = true, nullable = false)
+    @NotBlank
+    @Size(min=3, max=20)
     private String username;
 
+    @NotBlank
     private String password;
 
     @Column(unique = true, nullable = false)
+    @NotBlank
+    @Size(max=20)
     private String email;
-
+    @Min(0)
+    @Max(100)
     private Integer age;
 
     @Enumerated(EnumType.STRING)

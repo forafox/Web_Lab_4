@@ -22,8 +22,7 @@ export class NoopInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     let token = localStorage.getItem(USER_STORAGE_KEY);
 
-    if (!!token && !req.url.includes("/refreshtoken")) {
-      console.log("Adding authorization header")
+    if (!!token && !req.url.includes("/refreshtoken") && !req.url.includes("/register") && !req.url.includes("/auth")) {
       const authReq = req.clone({
         headers: req.headers.set('Authorization', 'Bearer ' + token)
       });

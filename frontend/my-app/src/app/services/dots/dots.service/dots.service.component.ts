@@ -35,14 +35,14 @@ export class DotsService {
   }
 
   onSubmitCoordinateForm(x: number, y: number, r: number) {
-    console.log("SUBMIT: ", x, " ", y, " ", r);
+    // console.log("SUBMIT: ", x, " ", y, " ", r);
     return this.http.post('http://localhost:8080/api/v2/canvas/dot', {
       x,
       y,
       r,
     }).subscribe(
       data => {
-        console.log("saveDot! : ", data)
+        // console.log("saveDot! : ", data)
         this.getDots().subscribe(dots => {
           // Обновляем данные или выполняем другие действия
           // Например, this.currentDotList = dots;

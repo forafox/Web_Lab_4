@@ -30,7 +30,7 @@
       <!-- login content -->
         <header class="mb-3 text-2xl font-bold">Log in</header>
         <form (ngSubmit)="onSubmit()" [formGroup]="form">
-          <div class="w-full rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-teal-400">
+          <div class="w-full  rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-teal-400">
             <input
               formControlName="username"
               id="login_username"
@@ -40,7 +40,7 @@
               placeholder="Name"
               class="my-3 w-full border-none bg-transparent outline-none focus:outline-none" />
           </div>
-          <div class="flex w-full items-center space-x-2 rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-teal-400">
+          <div class="flex mt-5 w-full items-center space-x-2 rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-teal-400">
             <input
               formControlName="password"
               id="login_password"

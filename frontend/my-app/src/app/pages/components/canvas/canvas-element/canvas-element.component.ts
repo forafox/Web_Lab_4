@@ -29,6 +29,7 @@ import {DataServiceComponent} from "./data-service/data-service.component";
   providedIn: 'root'
 })
 export class CanvasElementComponent implements OnInit {
+  dotFromClickIsValid: boolean = true;
 
   constructor(public dotsService: DotsService,
               private cdr: ChangeDetectorRef,
@@ -36,6 +37,13 @@ export class CanvasElementComponent implements OnInit {
   ) {
   }
 
+
+  getValidDotFromClick(){
+    return this.dotFromClickIsValid;
+  }
+  getErrorMessageFromDotClick(){
+    return "The dot is placed in an invalid area!"
+  }
   #getDots() {
     this.dotsService.getDots();
   }
@@ -110,8 +118,16 @@ export class CanvasElementComponent implements OnInit {
     ctx.fillStyle = "#2b2d42"; // Цвет точки
     ctx.fill();
 
-    this.dotsService.onSubmitCoordinateForm(Number(tableX.toFixed(2)), Number(tableY.toFixed(2)), this.currentR);
+    let resultX = Number(tableX.toFixed(2));
+    let resultY = Number(tableY.toFixed(2));
 
+    if( (resultX<=2 && resultX>=-2) && (resultY<=3 && resultY>=-5)) {
+      this.dotFromClickIsValid=true;
+      this.dotsService.onSubmitCoordinateForm(resultX, resultY, this.currentR);
+    }else{
+      this.dotFromClickIsValid=false;
+      console.log("Dots didn't add")
+    }
   }
 
   //вызывается при загрузке html-страницы и потом после передачи ей значений

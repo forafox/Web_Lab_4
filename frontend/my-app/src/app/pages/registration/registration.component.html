@@ -48,7 +48,7 @@
           <!--            Не может быть пустым-->
           <!--          </div>-->
           <div *ngIf="usernameControl().touched &&( usernameControl().hasError('minlength') || usernameControl().hasError('required') || usernameControl().hasError('maxlength'))">
-            <div class="text-red-500">
+            <div class="text-red-500 text-center pt-3 text-sm font-medium">
               {{ getUsernameErrorMessage() }}
             </div>
           </div>
@@ -65,7 +65,7 @@
               class="my-3 w-full border-none bg-transparent outline-none focus:outline-none"/>
           </div>
           <div *ngIf="ageControl().touched && (ageControl().hasError('notANumber') || ageControl().hasError('invalidAge'))">
-            <div class="text-red-500">
+            <div class="text-red-500 text-center pt-3 text-sm font-medium">
               {{ getAgeErrorMessage() }}
             </div>
           </div>
@@ -82,7 +82,7 @@
               class="my-3 w-full border-none bg-transparent outline-none focus:outline-none"/>
           </div>
           <div *ngIf="emailControl().touched &&( emailControl().hasError('email') || emailControl().hasError('required') || emailControl().hasError('maxlength'))">
-            <div class="text-red-500">
+            <div class="text-red-500 text-center pt-3 text-sm font-medium">
               {{ getEmailErrorMessage() }}
             </div>
           </div>
@@ -99,13 +99,13 @@
                 class="my-3 w-full border-none bg-transparent outline-none focus:outline-none"/>
             </div>
           <div *ngIf="passwordControl().touched && (passwordControl().hasError('minlength') || passwordControl().hasError('required') || passwordControl().hasError('maxlength'))">
-            <div class="text-red-500">
+            <div class="text-red-500 text-center pt-3 text-sm font-medium">
               {{ getPasswordErrorMessage() }}
             </div>
           </div>
           <div
             class="w-full mt-5 rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-teal-400"
-            [ngClass]="{'ring-teal-400': (passwordControl().valid && !form.hasError('notSame')),'ring-red-500': form.hasError('notSame') && confirmPasswordControl().touched}">
+            [ngClass]="{'ring-teal-400': (confirmPasswordControl().valid && !form.hasError('notSame')),'ring-red-500':(form.hasError('notSame') || confirmPasswordControl().invalid) && confirmPasswordControl().touched}">
             <input
               formControlName="confirmPassword"
               id="confirmPassword"
@@ -116,7 +116,7 @@
               class="my-3 w-full border-none bg-transparent outline-none focus:outline-none"/>
           </div>
           <div *ngIf="confirmPasswordControl().touched && (confirmPasswordControl().hasError('required') || form.hasError('notSame') )">
-            <div class="text-red-500">
+            <div class="text-red-500 text-center pt-3 text-sm font-medium">
             {{getConfirmPasswordErrorMessage()}}
             </div>
           </div>

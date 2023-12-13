@@ -22,7 +22,7 @@
       </div>
 <!--      [attr.disabled]="((selectedXNull) && (x!==selectedX))||(selectedX && selectedX!==x)? true : null"-->
       <div *ngIf="xControl().touched && xControl().hasError('noXSelected')">
-        <p class="text-red-500">
+        <p class="text-red-500 text-center pt-3 text-sm font-medium">
          {{getXErrorMessage()}}
         </p>
       </div>
@@ -44,7 +44,7 @@
     </div>
 
     <div *ngIf=" (yControl().hasError('maxLength') || yControl().hasError('required') || yControl().hasError('notANumber')|| yControl().hasError('invalidValue'))">
-      <div class="text-red-500 pb-3">
+      <div class="text-red-500 pb-3 text-center text-sm font-medium">
         {{ getYErrorMessage() }}
       </div>
     </div>
@@ -68,7 +68,7 @@
         </div>
       </div>
       <div *ngIf="rControl().touched && rControl().hasError('noRSelected')">
-        <p class="text-red-500">
+        <p class="text-red-500 text-center pt-3 text-sm font-medium">
           {{getRErrorMessage()}}
         </p>
       </div>

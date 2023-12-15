@@ -8,9 +8,11 @@ import {
 import {
   NoopInterceptor
 } from "./services/http/http-interceptor-service/http-interceptor-service.component";
+import {provideAnimations} from "@angular/platform-browser/animations";
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideAnimations(),
     provideRouter(routes),
     importProvidersFrom(HttpClientModule),
     {provide: HTTP_INTERCEPTORS, useClass: NoopInterceptor, multi: true},

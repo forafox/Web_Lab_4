@@ -6,6 +6,10 @@ import {LoginComponent} from "./pages/login/login.component";
 import {HeaderComponent} from "./pages/components/header/header.component";
 import {MainComponent} from "./pages/main/main.component";
 import {DotsManagerComponent} from "./pages/dots-manager/dots-manager.component";
+import {DotsTableComponent} from "./pages/components/table/dots.table/dots.table.component";
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatSortModule} from "@angular/material/sort";
+import {MatTableModule} from "@angular/material/table";
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -18,6 +22,8 @@ import {DotsManagerComponent} from "./pages/dots-manager/dots-manager.component"
     MainComponent,
     HeaderComponent,
     DotsManagerComponent,
+    DotsTableComponent,
+    MatTableModule, MatSortModule, MatPaginatorModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

@@ -7,4 +7,15 @@
     <app-canvas-element></app-canvas-element>
   </div>
 </div>
+<div class="flex items-center justify-center p-5">
+  <button
+    (click)="deleteDots()"
+    class="bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-600" type="submit">Delete all points
+  </button>
+</div>
+<div class="flex justify-center">
+  <app-dots-table>
+
+  </app-dots-table>
+</div>
 <app-footer></app-footer>

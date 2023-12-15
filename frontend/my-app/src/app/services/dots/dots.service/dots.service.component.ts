@@ -34,6 +34,14 @@ export class DotsService {
     return this.dots$;
   }
 
+  deleteDots() {
+    return this.http.delete('http://localhost:8080/api/v2/canvas/dots').subscribe(
+      (data) => {
+        console.log("The dots have been deleted!");
+        this.getDots();
+      })
+  }
+
   onSubmitCoordinateForm(x: number, y: number, r: number) {
     // console.log("SUBMIT: ", x, " ", y, " ", r);
     return this.http.post('http://localhost:8080/api/v2/canvas/dot', {

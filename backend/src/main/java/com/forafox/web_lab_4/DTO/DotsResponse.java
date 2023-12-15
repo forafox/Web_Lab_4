@@ -5,5 +5,7 @@ import java.util.List;
 
 @Builder
 public record DotsResponse(
-    List<DotResponse> dots
+    List<DotResponse> dots,
+
+    String message
 ){}

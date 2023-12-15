@@ -39,7 +39,7 @@ public class DotsController {
     public ResponseEntity<DotsResponse> getAllDots(Principal principal) {
         logger.info("Principal username: " + principal.getName());
         logger.info("Request to receive points");
-        return ResponseEntity.ok(dotService.getDots());
+        return ResponseEntity.ok(dotService.getDots(principal.getName()));
     }
 
     @GetMapping("/dot/{id}")
@@ -56,5 +56,11 @@ public class DotsController {
     ) {
         logger.info("Request to delete a point");
         return ResponseEntity.ok(dotService.deleteDot(id));
+    }
+    @DeleteMapping("/dots")
+    public ResponseEntity<DotsResponse> deleteDotById(Principal principal
+    ) {
+        logger.info("Request to delete a point");
+        return ResponseEntity.ok(dotService.clearDotsInBD(principal.getName()));
     }
 }

@@ -1,6 +1,7 @@
 import { Routes} from '@angular/router';
 import {AuthService} from "./services/auth.service";
 import {inject} from "@angular/core";
+import {VerificationEmailComponent} from "./pages/verification-email/verification-email.component";
 export const routes: Routes =[
   {
     path:'auth',
@@ -19,7 +20,6 @@ export const routes: Routes =[
   {
     path:'contact',
     loadComponent:()=>import('./pages/contact/contact.component').then((mod)=>mod.ContactComponent),
-    canActivate: [()=> inject(AuthService).isLoggedIn()]
   },
   {
     path:'register',
@@ -29,6 +29,10 @@ export const routes: Routes =[
     path:'dots',
     loadComponent:()=>import('./pages/dots-manager/dots-manager.component').then((mod)=>mod.DotsManagerComponent),
     canActivate: [()=> inject(AuthService).isLoggedIn()]
+  },
+  {
+    path:'verificationEmail',
+    loadComponent:()=>import('./pages/verification-email/verification-email.component').then((mod)=>mod.VerificationEmailComponent),
   },
 
 ];

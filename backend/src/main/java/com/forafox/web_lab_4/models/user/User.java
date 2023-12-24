@@ -37,7 +37,7 @@ public class User implements UserDetails {
 
     @Column(unique = true, nullable = false)
     @NotBlank
-    @Size(max=20)
+    @Size(max=40)
     private String email;
     @Min(0)
     @Max(100)
@@ -45,6 +45,10 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private String verificationCode;
+
+    private boolean enabled;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -78,6 +82,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.enabled;
     }
 }

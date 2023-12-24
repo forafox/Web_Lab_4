@@ -5,15 +5,19 @@ import {
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
-import {catchError, Observable, throwError} from 'rxjs';
+import {catchError, Observable, switchMap, throwError} from 'rxjs';
 import {AuthService, USER_STORAGE_KEY, USER_STORAGE_REFRESH_KEY} from '../../auth.service';
+import {Router} from "@angular/router";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class NoopInterceptor implements HttpInterceptor {
-  constructor(private auth: AuthService) {
+  constructor(private auth: AuthService,
+  private router: Router,
+  ) {
   }
 
   intercept(
@@ -29,14 +33,12 @@ export class NoopInterceptor implements HttpInterceptor {
 
       return next.handle(authReq).pipe(
         catchError((error) => {
-          // Handle errors here
           this.handleErrorResponse(error, req, next);
           return throwError(error);
         })
       );
     } else if (req.url.includes("/refreshtoken")) {
       console.log("Need to refresh JWT token.")
-
       return next.handle(req).pipe(
         catchError((error) => {
           // Handle errors here
@@ -47,33 +49,40 @@ export class NoopInterceptor implements HttpInterceptor {
       );
     } else {
       console.log("Request with no token. Passing it on")
-      return next.handle(req)
+      return next.handle(req).pipe(
+        catchError((error)=>{
+          // alert(error.error)
+          return throwError(error);
+        })
+      )
     }
   }
 
   private handleErrorResponse(error: any, req: HttpRequest<any>, next: HttpHandler): any {
-    // Handle the error response here based on status code or any other criteria
-    // Handle the response here
-    const status = error.status;
+
     if ([401].includes(error.status)) {
       console.log("Unauthorized request");
-      this.auth.refreshToken(localStorage.getItem(USER_STORAGE_REFRESH_KEY)).subscribe(
-        (res) => {
-          console.log("Refresh access", req)
+
+      return this.auth.refreshToken(localStorage.getItem(USER_STORAGE_REFRESH_KEY)).pipe(
+        switchMap(() => {
+          console.log("Refresh access", req);
           let authReq = req.clone({
             headers: req.headers.set('Authorization', 'Bearer ' + localStorage.getItem(USER_STORAGE_KEY))
           });
-          console.log("Refresh access2", authReq)
+          console.log("Refresh access2", authReq);
           return next.handle(authReq);
-          // return authReq;
+        })
+      ).subscribe(
+        (result) => {
+          console.log("Token refreshed successfully");
         },
         (error) => {
-          // Handle any error that occurred during the refresh
-          console.error("Refresh error", error);
+          console.error("Error refreshing token");
+          this.auth.signOut();
+          this.router.navigate(['/']);
         }
-      )
+      );
     }
-    console.error(`HTTP respons e error with status code: ${status}`);
-    return req;
+    }
   }
-}
+

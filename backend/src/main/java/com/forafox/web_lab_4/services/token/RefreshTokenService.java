@@ -9,13 +9,15 @@ import com.forafox.web_lab_4.models.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class RefreshTokenService {
-    private Long refreshTokenDurationMs = 86400000L;
+
+    private final Duration JWT_REFRESH_ACCESS_TIME_TO_LIVE = Duration.ofDays(7);
 
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
@@ -39,7 +41,9 @@ public class RefreshTokenService {
             refreshToken = refreshTokenRepository.getByUserId(userId).get();
         }
 
-        refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
+        var currentTime = Instant.now();
+        var expirationTime = currentTime.plus(JWT_REFRESH_ACCESS_TIME_TO_LIVE);
+        refreshToken.setExpiryDate(expirationTime);
         refreshToken.setToken(UUID.randomUUID().toString());
 
         refreshToken = refreshTokenRepository.save(refreshToken);

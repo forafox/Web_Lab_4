@@ -8,5 +8,4 @@ public class WebLab4Application {
 	public static void main(String[] args) {
 		SpringApplication.run(WebLab4Application.class, args);
 	}
-
 }

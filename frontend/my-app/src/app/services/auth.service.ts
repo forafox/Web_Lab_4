@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {BehaviorSubject, filter, map, Observable, switchMap} from "rxjs";
+import {BehaviorSubject, catchError, filter, map, Observable, switchMap, tap} from "rxjs";
 import {jwtDecode, JwtPayload} from "jwt-decode";
 import {Router, UrlTree} from "@angular/router";
 
@@ -69,20 +69,19 @@ export class AuthService {
         age,
         email
       },)
-      .pipe(
-        switchMap((res: any) => {
-          return this.login(username, password, age, email);
-        })
-      );
+      // .pipe(
+      //   switchMap((res: any) => {
+      //     //Так было до реализации подтверждения через почту.
+      //     // return this.login(username, password, age, email);
+      //   })
+      // );
   }
 
 
-  login(username: string, password: string, age: string, email: string) {
+  login(username: string, password: string) {
     return this.http.post('http://localhost:8080/api/v1/auth/auth', {
       username,
-      password,
-      age,
-      email
+      password
     },).pipe(
       map((res: any) => {
         console.log("Result: ", res);

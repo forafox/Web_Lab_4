@@ -92,7 +92,7 @@ export class RegistrationComponent {
       this.authService.register(username, password, age, email).subscribe({
         next: (res) => {
           console.log("REGISTER DONE: ", res);
-          this.router.navigateByUrl('/dashboard');
+          this.router.navigateByUrl('/verificationEmail');
         },
         error: err => {
           // this.error = "Registration Failed :(";

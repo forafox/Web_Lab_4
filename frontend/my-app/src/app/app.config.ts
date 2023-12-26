@@ -9,9 +9,11 @@ import {
   NoopInterceptor
 } from "./services/http/http-interceptor-service/http-interceptor-service.component";
 import {provideAnimations} from "@angular/platform-browser/animations";
+import {DotsManagerComponent} from "./pages/dots-manager/dots-manager.component";
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    DotsManagerComponent,
     provideAnimations(),
     provideRouter(routes),
     importProvidersFrom(HttpClientModule),

@@ -9,6 +9,9 @@ import com.forafox.web_lab_4.models.dot.DotRepository;
 import com.forafox.web_lab_4.models.user.User;
 import com.forafox.web_lab_4.models.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -132,6 +135,38 @@ public class DotService {
                     .username(dot.get().getUser().getUsername())
                     .time(dot.get().getTime())
                     .build();
+        }
+    }
+
+
+    public DotsResponse getDotsWithPage(String username,int page,int size) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isEmpty()) {
+            throw new RuntimeException();//TO DO
+        } else {
+            Pageable paging = PageRequest.of(page, size);
+            Page<Dot> pageTuts=repository.findAll(paging);
+            List<Dot> dots=pageTuts.getContent();
+
+            List<DotResponse> dotResponses = new ArrayList<>();
+
+                for (Dot dot : dots) {
+                    dotResponses.add(DotResponse.builder()
+                            .status(dot.getStatus())
+                            .x(dot.getX())
+                            .y(dot.getY())
+                            .r(dot.getR())
+                            .id(dot.getId())
+                            .username(dot.getUser().getUsername())
+                            .time(dot.getTime())
+                            .build());
+                }
+                return DotsResponse.builder()
+                        .dots(dotResponses)
+                        .currentPage(pageTuts.getNumber())
+                        .totalItems(pageTuts.getTotalElements())
+                        .totalPages(pageTuts.getTotalPages())
+                        .build();
         }
     }
 

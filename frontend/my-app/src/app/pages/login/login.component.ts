@@ -19,9 +19,7 @@ export class LoginComponent {
 
   form = this.fb.nonNullable.group({
     username: ['', [Validators.required]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
-    age: ['', [Validators.required]],
-    email: ['', [Validators.required]]
+    password: ['', [Validators.required, Validators.minLength(6)]]
   });
   error = '';
 
@@ -39,9 +37,9 @@ export class LoginComponent {
 
   onSubmit() {
     console.log("SUBMIT: ", this.form.value);
-    const {username, password, age, email} = this.form.getRawValue()
+    const {username, password} = this.form.getRawValue()
 
-    this.authService.login(username, password, age, email).subscribe({
+    this.authService.login(username, password).subscribe({
       next: (res) => {
         console.log("LOGIN DONE: ", res);
 

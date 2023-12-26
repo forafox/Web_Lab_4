@@ -13,6 +13,7 @@ import {
 import {HttpClient} from "@angular/common/http";
 import {DotsService} from "../../../../services/dots/dots.service/dots.service.component";
 import {DataServiceComponent} from "../canvas-element/data-service/data-service.component";
+import {DotsTableComponent} from "../../table/dots.table/dots.table.component";
 
 
 @Component({
@@ -40,7 +41,8 @@ export class CoordinateFormComponent {
               private fb: FormBuilder,
               private http: HttpClient,
               private dotsService: DotsService,
-              private dataService: DataServiceComponent
+              private dataService: DataServiceComponent,
+              private dotsTable : DotsTableComponent
   ) {
   }
 
@@ -88,7 +90,10 @@ export class CoordinateFormComponent {
 
       const {x, y, r} = this.form.getRawValue();
 
-      this.dotsService.onSubmitCoordinateForm(x, y, r)
+      // this.dotsTable.checkTotalPageView();
+      // this.dotsTable.checkPageSizeView();
+      this.dotsTable.goToSubmit(x,y,r)
+      // this.dotsService.onSubmitCoordinateForm(x, y, r,this.dotsTable.totalPages-1,this.dotsTable.pageSize)
     }
   }
 

@@ -1,4 +1,5 @@
 import {
+  AfterContentChecked,
   AfterViewInit,
   ChangeDetectorRef,
   Component,
@@ -13,10 +14,12 @@ import {
 import {CommonModule} from '@angular/common';
 import {HeaderComponent} from "../../header/header.component";
 import {FooterComponent} from "../../footer/footer.component";
-import {Dot, DotsList, DotsService} from "../../../../services/dots/dots.service/dots.service.component";
+import {DotsList, DotsService} from "../../../../services/dots/dots.service/dots.service.component";
 import {CoordinateFormComponent} from "../coordinate-form/coordinate-form.component";
 import {Subscription} from "rxjs";
 import {DataServiceComponent} from "./data-service/data-service.component";
+import {DotsTableComponent} from "../../table/dots.table/dots.table.component";
+import {DotsManagerComponent} from "../../../dots-manager/dots-manager.component";
 
 @Component({
   selector: 'app-canvas-element',
@@ -34,9 +37,11 @@ export class CanvasElementComponent implements OnInit {
   constructor(public dotsService: DotsService,
               private cdr: ChangeDetectorRef,
               private dataService: DataServiceComponent,
+              private dotsTable: DotsTableComponent,
+              private dotsManager: DotsManagerComponent
   ) {
-  }
 
+  }
 
   getValidDotFromClick(){
     return this.dotFromClickIsValid;
@@ -59,7 +64,7 @@ export class CanvasElementComponent implements OnInit {
 
   private context!: CanvasRenderingContext2D;
 
-  private currentDotList: DotsList = {dots: []};
+  private currentDotList: DotsList = {currentPage: 0, totalItems: 0, totalPages: 0, dots: []};
 
   @Input() currentR: number = 0;
 
@@ -70,10 +75,12 @@ export class CanvasElementComponent implements OnInit {
 
   private dotsSubscription!: Subscription;
 
+  pageSize: number=3;
+
+
+
   ngOnInit(): void {
-
     const canvas: HTMLCanvasElement = this.myCanvas.nativeElement;
-
     this.context = canvas.getContext('2d')!;
     if (this.context) {
 
@@ -83,6 +90,7 @@ export class CanvasElementComponent implements OnInit {
           this.#draw();
         }
       });
+
       this.dataService.getData().subscribe((data) => {
         this.currentR = data;
         this.#draw();
@@ -123,12 +131,22 @@ export class CanvasElementComponent implements OnInit {
 
     if( (resultX<=2 && resultX>=-2) && (resultY<=3 && resultY>=-5)) {
       this.dotFromClickIsValid=true;
-      this.dotsService.onSubmitCoordinateForm(resultX, resultY, this.currentR);
+      this.dotsTable.goToSubmit(resultX,resultY,this.currentR);
+      // this.dotsService.onSubmitCoordinateForm(resultX, resultY, this.currentR,totalPages,this.pageSize);
     }else{
       this.dotFromClickIsValid=false;
       console.log("Dots didn't add")
     }
   }
+
+
+
+
+
+
+
+
+
 
   //вызывается при загрузке html-страницы и потом после передачи ей значений
   #draw() {
@@ -142,9 +160,11 @@ export class CanvasElementComponent implements OnInit {
     if (this.currentDotList.dots !== undefined) {
       this.currentDotList.dots.forEach((point) => {
         let color = point.status === "Hit!" ? "green" : "red";
-        if (point.r === Number(this.currentR)) {
-          this.#drawPoint(point.x, point.y, point.r, color);
-        }
+        //Провека на то, что точка соответствует текущему радиусу. Временно убрана
+        // if (point.r === Number(this.currentR)) {
+        //   this.#drawPoint(point.x, point.y, point.r, color);
+        // }
+        this.#drawPoint(point.x, point.y, point.r, color);
       });
     }
 

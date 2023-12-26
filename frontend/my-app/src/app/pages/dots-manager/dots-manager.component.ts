@@ -1,4 +1,4 @@
-import {Component, Injectable, OnInit} from '@angular/core';
+import {Component, Injectable} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FooterComponent} from "../components/footer/footer.component";
 import {CoordinateFormComponent} from "../components/canvas/coordinate-form/coordinate-form.component";
@@ -6,7 +6,7 @@ import {HeaderComponent} from "../components/header/header.component";
 import {CanvasElementComponent} from "../components/canvas/canvas-element/canvas-element.component";
 import {DotsTableComponent} from "../components/table/dots.table/dots.table.component";
 import {DotsService} from "../../services/dots/dots.service/dots.service.component";
-import {BehaviorSubject, Subject} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 
 @Component({
   selector: 'app-dots-manager',

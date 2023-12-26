@@ -1,21 +1,17 @@
-import {AfterViewInit, ChangeDetectionStrategy, Component, Injectable, OnInit, ViewChild} from '@angular/core';
+import {Component, Injectable, OnInit, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {MatPaginator, MatPaginatorModule, PageEvent} from "@angular/material/paginator";
+import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {MatSort, MatSortModule} from "@angular/material/sort";
 
 import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
 import {Dot, DotsList, DotsService} from "../../../../services/dots/dots.service/dots.service.component";
-import {BehaviorSubject, Subject, Subscription} from "rxjs";
-import {query} from "@angular/animations";
 import {NgxPaginationModule} from "ngx-pagination";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {DotsManagerComponent} from "../../../dots-manager/dots-manager.component";
 
 
 export const PAGE_SIZE = 'PAGE_SIZE';
-export const TOTAL_PAGE = 'TOTAL_PAGE';
 
 @Component({
   selector: 'app-dots-table',

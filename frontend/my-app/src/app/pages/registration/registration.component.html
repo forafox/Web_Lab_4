@@ -44,9 +44,6 @@
               placeholder="Name"
               class="my-3 w-full border-none bg-transparent outline-none focus:outline-none"/>
           </div>
-          <!--          <div class="text-red-500" *ngIf="usernameControl().invalid && (usernameControl().touched)">-->
-          <!--            Не может быть пустым-->
-          <!--          </div>-->
           <div *ngIf="usernameControl().touched &&( usernameControl().hasError('minlength') || usernameControl().hasError('required') || usernameControl().hasError('maxlength'))">
             <div class="text-red-500 text-center pt-3 text-sm font-medium">
               {{ getUsernameErrorMessage() }}

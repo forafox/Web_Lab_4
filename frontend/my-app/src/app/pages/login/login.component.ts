@@ -3,7 +3,6 @@ import {CommonModule} from '@angular/common';
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
-import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 
 @Component({
   selector: 'app-login',
@@ -26,9 +25,7 @@ export class LoginComponent {
   constructor(private fb: FormBuilder,
               private authService: AuthService,
               private router: Router,
-  ) {
-
-  }
+  ) {}
 
   goToDashboardPage(): void {
     // Выполнить переход на начальную страницу

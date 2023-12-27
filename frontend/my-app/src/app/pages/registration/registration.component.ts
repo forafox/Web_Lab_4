@@ -19,6 +19,7 @@ import {AuthService} from "../../services/auth.service";
 })
 export class RegistrationComponent {
 
+
   checkPasswords: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
     const passwordControl = group.get('password');
     const confirmPasswordControl = group.get('confirmPassword');
@@ -76,7 +77,10 @@ export class RegistrationComponent {
               private router: Router,
   ) {
 
-  }
+    const clientId='80825eddb76ba0391271';
+    const redirectUrl="http://localhost:4200/callback"
+    const locationUrl="https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}`"
+      }
 
   createAccount() {
 

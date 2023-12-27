@@ -47,13 +47,12 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/v2/**")
                         .authenticated()
                         .anyRequest().permitAll()
+                        
                 )
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 //                .cors(AbstractHttpConfigurer::disable);
-
-
         return http.build();
     }
 

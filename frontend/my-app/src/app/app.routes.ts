@@ -1,7 +1,6 @@
 import { Routes} from '@angular/router';
 import {AuthService} from "./services/auth.service";
 import {inject} from "@angular/core";
-import {VerificationEmailComponent} from "./pages/verification-email/verification-email.component";
 export const routes: Routes =[
   {
     path:'auth',
@@ -34,5 +33,4 @@ export const routes: Routes =[
     path:'verificationEmail',
     loadComponent:()=>import('./pages/verification-email/verification-email.component').then((mod)=>mod.VerificationEmailComponent),
   },
-
 ];

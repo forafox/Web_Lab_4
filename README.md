@@ -2,7 +2,7 @@
 
 Left part             |  Right part
 :-------------------------:|:-------------------------:
-![](https://github.com/forafox/Web_Lab_4/blob/master/images/start_page.png)  |  ![](https://github.com/forafox/Web_Lab_4/blob/master/images/contact_form.png)
+![](https://github.com/forafox/Web_Lab_4/blob/master/images/start_page.png)  |  ![](https://github.com/forafox/Web_Lab_4/blob/master/images/contact_form_page.png)
 ![](https://github.com/forafox/Web_Lab_4/blob/master/images/login_page.png)   |  ![](https://github.com/forafox/Web_Lab_4/blob/master/images/sign_up.png)
 ![](https://github.com/forafox/Web_Lab_4/blob/master/images/dashboard_page.png)  |  ![](https://github.com/forafox/Web_Lab_4/blob/master/images/example_validation.png)
 ![](https://github.com/forafox/Web_Lab_4/blob/master/images/coordinate_form.png)   |  ![](https://github.com/forafox/Web_Lab_4/blob/master/images/coordinate_with_result.png)
